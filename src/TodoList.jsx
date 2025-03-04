@@ -1,25 +1,55 @@
+import { CheckIcon, ClipboardDocumentListIcon, TrashIcon } from "@heroicons/react/24/outline";
 import { useRef, useState } from "react";
+import Todo from "./Todo";
 
 export default function TodoList() {
     let [todos, setTodo] = useState([])
     let [tempTodo, setTempTodo] = useState("")
     let clearInput = useRef(null);
 
-    const handleAdd = (e) => {
-        console.log(e.target.value);
-        setTodo([...todos, tempTodo]);
-        clearInput.current.clear()
+    const handleAdd = () => {
+        if(todos.includes(tempTodo)) {
+            alert("Todo already exists");
+        } else {
+            setTodo([...todos, tempTodo]);
+        }
+
+        clearInput.current.focus();
+        setTempTodo("");
     }
 
     return (
         <>
-            <div className="card">
-                <h1>Todo List</h1>
-                <input ref={clearInput} type="text" name="name" onChange={(e) => setTempTodo(e.target.value)} />
-                <button onClick={handleAdd}>Add</button>
-                {todos.map((todo) => {
-                    return <p key={todo}>{todo}</p>
-                })}
+            <div className="bg-white place-self-center w-11/12 max-w-md flex flex-col p-7 min-h-[550px] rounded-xl">
+                <div className="flex item-center mt-7 gap-2">
+                    <ClipboardDocumentListIcon className="w-8" />
+                    <h1 className="text-3xl font-semibold">
+                        Todolist
+                    </h1>
+                </div>
+
+                <div className="flex item-center my-7 bg-gray-200 rounded-full">
+                    <input 
+                        type="text" 
+                        className="bg-transparent border-0 outline-none flex-1 h-14 pl-6 pr-2 placeholder:text-slate-600" 
+                        placeholder="Add your task"
+                        onChange={(e) => setTempTodo(e.target.value)}
+                        ref={clearInput}
+                        value={tempTodo}
+                    />
+                    <button 
+                        className="border-none rounded-full bg-orange-600 w-32 h-14 text-white text-lg font-medium cursor-pointer"
+                        onClick={handleAdd}
+                    >
+                        Add +
+                    </button>
+                </div>
+
+                {
+                    todos.map((todo) => {
+                        return <Todo name={todo} key={todo} />
+                    })
+                }
             </div>
         </>
     )

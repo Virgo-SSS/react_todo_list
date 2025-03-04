@@ -3,7 +3,9 @@ import TodoList from './TodoList'
 function App() {
   return (
     <>
-      <TodoList />
+      <div className="bg-stone-900 grid py-4 min-h-screen">
+        <TodoList />
+      </div>
     </>
   )
 }
