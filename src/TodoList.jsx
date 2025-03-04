@@ -1,4 +1,4 @@
-import { CheckIcon, ClipboardDocumentListIcon, TrashIcon } from "@heroicons/react/24/outline";
+import {  ClipboardDocumentListIcon } from "@heroicons/react/24/outline";
 import { useRef, useState } from "react";
 import Todo from "./Todo";
 
@@ -8,10 +8,19 @@ export default function TodoList() {
     let clearInput = useRef(null);
 
     const handleAdd = () => {
-        if(todos.includes(tempTodo)) {
+        if(todos.find(todo => todo.name === tempTodo)) {
             alert("Todo already exists");
-        } else {
-            setTodo([...todos, tempTodo]);
+        } 
+
+        if(tempTodo == "") {
+            alert("Please fill the input to add todo");
+        }
+        
+        if(!todos.find(todo => todo.name === tempTodo) && tempTodo != "") {
+            setTodo([...todos, {
+                name: tempTodo,
+                status: false
+            }]);
         }
 
         clearInput.current.focus();
@@ -46,8 +55,9 @@ export default function TodoList() {
                 </div>
 
                 {
-                    todos.map((todo) => {
-                        return <Todo name={todo} key={todo} />
+                    todos &&
+                    todos.map((todo, index) => {
+                        return <Todo todo={todo} setTodo={setTodo} key={index} />
                     })
                 }
             </div>
